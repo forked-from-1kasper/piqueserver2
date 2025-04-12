@@ -55,7 +55,6 @@ S_ENDED = 'Votekick for {victim} (#{victim_id}) has ended. {result}'
 S_RESULT_TIMED_OUT = 'Votekick timed out'
 S_RESULT_CANCELLED = 'Cancelled'
 S_RESULT_BANNED = 'Banned by admin'
-S_RESULT_KICKED = 'Kicked by admin'
 S_RESULT_INSTIGATOR_KICKED = 'Instigator kicked by admin'
 S_RESULT_LEFT = '{victim} (#{victim_id}) left during votekick'
 S_RESULT_INSTIGATOR_LEFT = 'Instigator {instigator} (#{instigator_id}) left'
@@ -349,11 +348,8 @@ def apply_script(protocol, connection, config):
 
         def kick(self, reason=None, silent=False):
             votekick = self.protocol.votekick
-            if votekick:
-                if votekick.victim is self:
-                    votekick.end(S_RESULT_KICKED)
-                elif votekick.instigator is self:
-                    votekick.end(S_RESULT_INSTIGATOR_KICKED)
+            if votekick and votekick.instigator is self:
+                votekick.end(S_RESULT_INSTIGATOR_KICKED)
             connection.kick(self, reason, silent)
 
     return VotekickProtocol, VotekickConnection
