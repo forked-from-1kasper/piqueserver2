@@ -980,7 +980,10 @@ class ServerConnection(BaseConnection):
             old_team = self.team
             self.team = None
             self.on_team_changed(old_team)
+
         self.on_reset()
+
+        self.kills = 0
         self.name = self.hp = self.world_object = None
 
     def hit(self, value, by=None, kill_type=WEAPON_KILL):
