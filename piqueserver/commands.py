@@ -404,15 +404,21 @@ def handle_command(connection, command, parameters):
     if result == False:
         parameters = ['***'] * len(parameters)
 
-    log_message = '<{name}> /{command} {parameters}'
-    if result:
+    if connection.name is not None:
+        log_message = '<{name}> /{command} {parameters}'
+    else:
+        log_message = '{{Anonymous}} /{command} {parameters}'
+
+    if result is not None:
         log_message += ' -> {result}'
 
-    log.info(log_message,
-             name=escape_control_codes(connection.name),
-             command=escape_control_codes(command),
-             parameters=escape_control_codes(' '.join(parameters)),
-             result=escape_control_codes(str(result)) if result is not None else None)
+    log.info(
+        log_message,
+        name       = escape_control_codes(connection.name) if connection.name is not None else None,
+        command    = escape_control_codes(command),
+        parameters = escape_control_codes(' '.join(parameters)),
+        result     = escape_control_codes(str(result)) if result is not None else None
+    )
 
     return result
 

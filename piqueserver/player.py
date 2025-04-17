@@ -42,8 +42,8 @@ class FeatureConnection(ServerConnection):
         self.best_streak = 0
         self.chat_limiter = RateLimiter(
             CHAT_WINDOW_SIZE, CHAT_WINDOW_SIZE / CHAT_PER_SECOND)
-        self.user_types = None
-        self.rights = None
+        self.user_types = AttributeSet()
+        self.rights = AttributeSet()
         self.can_complete_line_build = True
         self.current_send_lines_types = []
 
@@ -99,8 +99,6 @@ class FeatureConnection(ServerConnection):
         self.protocol.irc_say('* %s (IP %s, ID %s) entered the game!' %
                               (self.name, self.address[0], self.player_id))
         if self.user_types is None:
-            self.user_types = AttributeSet()
-            self.rights = AttributeSet()
             if self.protocol.everyone_is_admin:
                 self.on_user_login('admin', False)
 
