@@ -862,6 +862,9 @@ class FeatureProtocol(ServerProtocol):
         if map_on_map_change is not None:
             map_on_map_change(self, the_map)
 
+        if not all(the_map.get_solid(x, y, 63) for x, y in itertools.product(range(512), repeat = 2)):
+            log.warn('The map may not work in old versions of OpenSpades')
+
     def on_map_leave(self):
         map_on_map_leave = self.map_info.on_map_leave
         if map_on_map_leave is not None:
